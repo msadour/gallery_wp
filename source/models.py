@@ -15,11 +15,11 @@ class User(db.Model):
     last_name = db.Column(db.String())
     is_login = db.Column(db.Boolean())
 
-    def verify_password(self, password):
+    def verify_password(self, password: str) -> bool:
         return password == self.password
 
-    def encode_auth_token(self):
-        payload = {
+    def encode_auth_token(self) -> str:
+        payload: dict = {
             "exp": datetime.utcnow() + timedelta(days=1),
             "iat": datetime.utcnow(),
             "sub": self.id,
@@ -27,7 +27,7 @@ class User(db.Model):
         return jwt.encode(payload, key=API_key, algorithm="HS256")
 
     @staticmethod
-    def decode_auth_token(auth_token):
+    def decode_auth_token(auth_token: str) -> str:
         try:
             payload = jwt.decode(auth_token, API_key, algorithms="HS256")
             return payload["sub"]
