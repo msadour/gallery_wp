@@ -1,15 +1,12 @@
-import uuid
 from datetime import datetime, timedelta
 
-from sqlalchemy.dialects.postgresql import UUID
 import jwt
-import bcrypt
 
-from . import db, app, API_key
+from . import db, API_key
 
 
 class User(db.Model):
-    __tablename__ = 'user'
+    __tablename__ = "user"
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(), unique=True)
@@ -19,28 +16,22 @@ class User(db.Model):
     is_login = db.Column(db.Boolean())
 
     def verify_password(self, password):
-        # pwhash = bcrypt.hashpw(password.encode(), self.password)
-        # return self.password == pwhash
         return password == self.password
 
     def encode_auth_token(self):
         payload = {
-            'exp': datetime.utcnow() + timedelta(days=1),
-            'iat': datetime.utcnow(),
-            'sub': self.id
+            "exp": datetime.utcnow() + timedelta(days=1),
+            "iat": datetime.utcnow(),
+            "sub": self.id,
         }
-        return jwt.encode(
-            payload,
-            key=API_key,
-            algorithm='HS256'
-        )
+        return jwt.encode(payload, key=API_key, algorithm="HS256")
 
     @staticmethod
     def decode_auth_token(auth_token):
         try:
-            payload = jwt.decode(auth_token, API_key, algorithms='HS256')
-            return payload['sub']
+            payload = jwt.decode(auth_token, API_key, algorithms="HS256")
+            return payload["sub"]
         except jwt.ExpiredSignatureError:
-            return 'Signature expired. Please log in again.'
+            return "Signature expired. Please log in again."
         except jwt.InvalidTokenError:
-            return 'Invalid token. Please log in again.'
+            return "Invalid token. Please log in again."

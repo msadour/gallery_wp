@@ -1,3 +1,6 @@
 .env
 venv
 .idea
+source/gallery/gallery/*
+__pycache__/
+source/__pycache__/
