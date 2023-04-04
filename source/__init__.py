@@ -13,7 +13,7 @@ def init_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:qwertz@localhost:5433/gallery_wp"
     app.secret_key = API_key
 
-    from .models import User, Image
+    from .models import User
 
     db.init_app(app)
     migrate.init_app(app, db)

@@ -44,11 +44,3 @@ class User(db.Model):
             return 'Signature expired. Please log in again.'
         except jwt.InvalidTokenError:
             return 'Invalid token. Please log in again.'
-
-
-class Image(db.Model):
-    __tablename__ = 'image'
-
-    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    name = db.Column(db.String())
