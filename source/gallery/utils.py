@@ -5,6 +5,7 @@ from PIL import Image
 from werkzeug.datastructures import FileStorage
 
 from ..common import retrieve_user_from_token
+from ..exceptions import WrongFormatImageException
 
 
 class ImageManager:
@@ -23,7 +24,7 @@ class ImageManager:
         unique_image_name: UUID = uuid4()
         type_image: str = file.mimetype.split("/")[1]
         if type_image not in self.supported_format:
-            raise Exception("Wrong image format. Image must be jpg, jpeg or png")
+            raise WrongFormatImageException()
         file.save(f"{user_gallery_path}/{unique_image_name}.{type_image}")
 
     @staticmethod

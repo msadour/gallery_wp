@@ -1,6 +1,10 @@
 from typing import Optional
 
-from ..exceptions import UsernameException, WrongPassword
+from ..exceptions import (
+    UsernameNotExistException,
+    WrongPasswordException,
+    UsernameAlreadyExistException,
+)
 from ..models import User, db
 from ..common import retrieve_user_from_token
 
@@ -9,10 +13,10 @@ def perform_login(username: str, password: str) -> str:
     user: Optional[User] = User.query.filter(User.username == username).first()
 
     if user is None:
-        raise UsernameException()
+        raise UsernameNotExistException()
 
     if not user.verify_password(password):
-        raise WrongPassword()
+        raise WrongPasswordException()
 
     token: str = user.encode_auth_token()
 
@@ -25,7 +29,7 @@ def perform_signup(
     user_with_username: User = User.query.filter(User.username == username).first()
 
     if user_with_username:
-        raise Exception("This username exist")
+        raise UsernameAlreadyExistException()
 
     new_user: User = User(
         username=username, password=password, first_name=first_name, last_name=last_name
