@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 
 
-env_path = os.path.dirname(os.path.abspath(__file__)) + "/.env"
+env_path: str = os.path.dirname(os.path.abspath(__file__)) + "/.env"
 load_dotenv(env_path)
 
 
