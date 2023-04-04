@@ -1,11 +1,11 @@
 from flask import session, request, jsonify, Blueprint
 
 from .utils import (
-    get_token_from_user_logged,
+    perform_login,
     perform_signup,
-    get_token_from_request,
     perform_delete,
 )
+from ..common import get_token_from_request
 
 
 bp_user = Blueprint("bp_user", __name__)
@@ -15,7 +15,7 @@ bp_user = Blueprint("bp_user", __name__)
 def login():
     username: str = request.json["username"]
     password: str = request.json["password"]
-    token: str = get_token_from_user_logged(username=username, password=password)
+    token: str = perform_login(username=username, password=password)
     return jsonify(token=token), 200
 
 
@@ -36,7 +36,7 @@ def signup():
         username=username, password=password, first_name=first_name, last_name=last_name
     )
 
-    token: str = get_token_from_user_logged(username=username, password=password)
+    token: str = perform_login(username=username, password=password)
 
     return jsonify(token=token), 201
 
