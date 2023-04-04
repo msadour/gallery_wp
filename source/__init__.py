@@ -2,17 +2,18 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+from .config import Config
+
 db: SQLAlchemy = SQLAlchemy()
 migrate: Migrate = Migrate()
-API_key: str = "23c9841cf0d64d3f8b2625285e3cc497"
+API_key: str = Config.API_KEY
 
 
 def init_app() -> Flask:
     app: Flask = Flask(__name__)
-    app.config["DEBUG"] = True
-    app.config[
-        "SQLALCHEMY_DATABASE_URI"
-    ] = "postgresql://postgres:qwertz@localhost:5433/gallery_wp"
+    app.config["DEBUG"] = Config.DEBUG
+    db_uri: str = f"postgresql://{Config.DB_USER}:{Config.DB_PASSWORD}@{Config.DB_HOST}:{Config.DB_PORT}/{Config.DB_NAME}"
+    app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     app.secret_key = API_key
 
     from .models import User
