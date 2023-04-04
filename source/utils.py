@@ -1,3 +1,5 @@
+import os
+import uuid
 from typing import Optional
 
 from .exceptions import UsernameException, WrongPassword
@@ -50,6 +52,21 @@ def get_token_from_request(request) -> str:
     return auth_token
 
 
-def perform_delete(user):
+def perform_delete(user: User):
     db.session.delete(user)
     db.session.commit()
+
+
+def perform_upload_image(user: User, file=None):
+    current_path = os.path.dirname(os.path.abspath(__file__))
+    user_gallery_path = f"{current_path}/gallery/{user.username}"
+    if not os.path.exists(user_gallery_path):
+        os.makedirs(user_gallery_path)
+
+    unique_image_name = uuid.uuid4()
+    type_image = file.mimetype.split("/")[1]
+    file.save(f"{user_gallery_path}/{unique_image_name}.{type_image}")
+
+
+def perform_get_images(user):
+    pass

@@ -1,6 +1,6 @@
 from flask import session, request, jsonify, Blueprint
 
-from .utils import get_user_logged, perform_signup, get_token_from_request, retrieve_user_from_token, perform_delete
+from .utils import get_user_logged, perform_signup, get_token_from_request, retrieve_user_from_token, perform_delete, perform_upload_image, perform_get_images
 
 
 main = Blueprint('main', __name__)
@@ -41,3 +41,20 @@ def delete_account():
     user = retrieve_user_from_token(token=token)
     perform_delete(user)
     return jsonify(message="User deleted."), 204
+
+
+@main.route('/upload_image', methods=('POST',))
+def upload_image():
+    token = get_token_from_request(request=request)
+    user = retrieve_user_from_token(token=token)
+    file = request.files['image']
+    perform_upload_image(user, file=file)
+    return jsonify(message="Image upload."), 201
+
+
+@main.route('/get_images', methods=('POST',))
+def get_images():
+    token = get_token_from_request(request=request)
+    user = retrieve_user_from_token(token=token)
+    images = perform_get_images(user)
+    return jsonify(images=images), 201
