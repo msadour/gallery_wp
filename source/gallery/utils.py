@@ -30,8 +30,7 @@ class ImageManager:
     def get_user_images(user_gallery_path: str) -> list:
         all_images_name: list = os.listdir(user_gallery_path)
         all_images: list = [
-            f"{user_gallery_path}/{file_name}"
-            for file_name in all_images_name
+            f"{user_gallery_path}/{file_name}" for file_name in all_images_name
         ]
         return all_images
 
@@ -44,5 +43,7 @@ class ImageManager:
 
     def perform_get_image(self, image_id: str) -> str:
         images_user_path: str = f"{self.current_path}/images_users/{self.user.username}"
-        image: str = [image for image in os.listdir(images_user_path) if image_id in image][0]
+        image: str = [
+            image for image in os.listdir(images_user_path) if image_id in image
+        ][0]
         return image

@@ -22,10 +22,7 @@ def perform_login(username: str, password: str) -> dict:
 
     token: str = user.encode_auth_token()
 
-    return {
-        "token": token,
-        "username": user.username
-    }
+    return {"token": token, "username": user.username}
 
 
 def perform_signup(

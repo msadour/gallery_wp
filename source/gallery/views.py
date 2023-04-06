@@ -27,7 +27,5 @@ def get_images():
 @bp_gallery.route("/get_image/<image_id>", methods=("GET",))
 def get_single_image(image_id):
     token: str = get_token_from_request(request=request)
-    image: str = ImageManager(token=token).perform_get_image(
-        image_id=image_id
-    )
+    image: str = ImageManager(token=token).perform_get_image(image_id=image_id)
     return jsonify(image=image), 200

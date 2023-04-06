@@ -22,8 +22,8 @@ def init_app() -> Flask:
     @app.after_request
     def after_request(response):
         header = response.headers
-        header['Access-Control-Allow-Origin'] = '*'
-        header['Access-Control-Allow-Headers'] = '*'
+        header["Access-Control-Allow-Origin"] = "*"
+        header["Access-Control-Allow-Headers"] = "*"
         return response
 
     from .models import User
