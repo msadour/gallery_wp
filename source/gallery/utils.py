@@ -26,7 +26,8 @@ class ImageManager:
             raise WrongFormatImageException()
         file.save(f"{user_gallery_path}/{unique_image_name}.{type_image}")
 
-    def get_user_images(self, user_gallery_path: str) -> list:
+    @staticmethod
+    def get_user_images(user_gallery_path: str) -> list:
         all_images_name: list = os.listdir(user_gallery_path)
         all_images: list = [
             f"{user_gallery_path}/{file_name}"
