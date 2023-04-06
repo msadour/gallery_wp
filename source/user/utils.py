@@ -11,7 +11,7 @@ from ..models import User, db
 from ..common import retrieve_user_from_token
 
 
-def perform_login(username: str, password: str) -> str:
+def perform_login(username: str, password: str) -> dict:
     user: Optional[User] = User.query.filter(User.username == username).first()
 
     if user is None:
@@ -22,7 +22,10 @@ def perform_login(username: str, password: str) -> str:
 
     token: str = user.encode_auth_token()
 
-    return token
+    return {
+        "token": token,
+        "username": user.username
+    }
 
 
 def perform_signup(
@@ -36,6 +39,10 @@ def perform_signup(
     new_user: User = User(
         username=username, password=password, first_name=first_name, last_name=last_name
     )
+
+    new_images_user_folder: str = f"source/gallery/images_users/{new_user.username}"
+    if not os.path.exists(new_images_user_folder):
+        os.makedirs(new_images_user_folder)
 
     db.session.add(new_user)
     db.session.commit()

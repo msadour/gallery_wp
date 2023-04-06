@@ -15,8 +15,8 @@ bp_user = Blueprint("bp_user", __name__)
 def login():
     username: str = request.json["username"]
     password: str = request.json["password"]
-    token: str = perform_login(username=username, password=password)
-    return jsonify(token=token), 200
+    data: dict = perform_login(username=username, password=password)
+    return jsonify(**data), 200
 
 
 @bp_user.route("/logout", methods=("POST",))
@@ -36,9 +36,9 @@ def signup():
         username=username, password=password, first_name=first_name, last_name=last_name
     )
 
-    token: str = perform_login(username=username, password=password)
+    data: dict = perform_login(username=username, password=password)
 
-    return jsonify(token=token), 201
+    return jsonify(**data), 201
 
 
 @bp_user.route("/delete_account", methods=("DELETE",))
