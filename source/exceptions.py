@@ -1,6 +1,3 @@
-from flask import jsonify, current_app
-
-
 class UsernameNotExistException(Exception):
     def __init__(self):
         self.message = "This username doesn't exist"
@@ -38,6 +35,6 @@ class NotTokenException(Exception):
 
 class WrongFormatImageException(Exception):
     def __init__(self):
-        self.message = "Wrong image format. Image must be jpg, jpeg or png"
+        self.message = "Wrong image format. Image must be jpg, jpeg, png or webp"
         self.code = 400
         super().__init__(self.message)

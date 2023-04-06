@@ -12,7 +12,7 @@ bp_gallery = Blueprint("bp_gallery", __name__)
 @bp_gallery.route("/upload_image", methods=("POST",))
 def upload_image():
     token: str = get_token_from_request(request=request)
-    file: FileStorage = request.files["image"]
+    file: FileStorage = request.files["file"]
     ImageManager(token=token).perform_upload_image(file=file)
     return jsonify(message="Image uploaded"), 201
 
@@ -27,8 +27,7 @@ def get_images():
 @bp_gallery.route("/get_image/<image_id>", methods=("GET",))
 def get_single_image(image_id):
     token: str = get_token_from_request(request=request)
-    extension: str = request.args.get("extension")
-    image: bytes = ImageManager(token=token).perform_get_image(
-        image_id=image_id, extension=extension
+    image: str = ImageManager(token=token).perform_get_image(
+        image_id=image_id
     )
     return jsonify(image=image), 200

@@ -1,7 +1,6 @@
 import os
 from uuid import UUID, uuid4
 
-from PIL import Image
 from werkzeug.datastructures import FileStorage
 
 from ..common import retrieve_user_from_token
@@ -12,7 +11,7 @@ class ImageManager:
     def __init__(self, token: str):
         self.user = retrieve_user_from_token(token=token)
         self.current_path = os.path.dirname(os.path.abspath(__file__))
-        self.supported_format = ["jpg", "jpeg", "png"]
+        self.supported_format = ["jpg", "jpeg", "png", "webp"]
 
     def perform_upload_image(self, file: FileStorage) -> None:
         user_gallery_path: str = (
@@ -27,16 +26,10 @@ class ImageManager:
             raise WrongFormatImageException()
         file.save(f"{user_gallery_path}/{unique_image_name}.{type_image}")
 
-    @staticmethod
-    def get_image_encoded(image_path: str) -> bytes:
-        pil_img: Image = Image.open(f"{image_path}")
-        pil_img_decoded: bytes = pil_img.tobytes("xbm", "rgb").decode()
-        return pil_img_decoded
-
     def get_user_images(self, user_gallery_path: str) -> list:
         all_images_name: list = os.listdir(user_gallery_path)
         all_images: list = [
-            self.get_image_encoded(f"{user_gallery_path}/{file_name}")
+            f"{user_gallery_path}/{file_name}"
             for file_name in all_images_name
         ]
         return all_images
@@ -48,7 +41,7 @@ class ImageManager:
         encoded_images: list = self.get_user_images(user_gallery_path=user_gallery_path)
         return encoded_images
 
-    def perform_get_image(self, image_id: str, extension: str) -> bytes:
-        image_path: str = f"{self.current_path}/images_users/{self.user.username}/{image_id}.{extension}"
-        image: bytes = self.get_image_encoded(image_path=image_path)
+    def perform_get_image(self, image_id: str) -> str:
+        images_user_path: str = f"{self.current_path}/images_users/{self.user.username}"
+        image: str = [image for image in os.listdir(images_user_path) if image_id in image][0]
         return image

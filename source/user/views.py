@@ -41,7 +41,7 @@ def signup():
     return jsonify(token=token), 201
 
 
-@bp_user.route("/delete_account", methods=("POST",))
+@bp_user.route("/delete_account", methods=("DELETE",))
 def delete_account():
     token: str = get_token_from_request(request=request)
     perform_delete(token=token)

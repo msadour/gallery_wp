@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 from .config import Config
 
@@ -15,6 +16,15 @@ def init_app() -> Flask:
     db_uri: str = f"postgresql://{Config.DB_USER}:{Config.DB_PASSWORD}@{Config.DB_HOST}:{Config.DB_PORT}/{Config.DB_NAME}"
     app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     app.secret_key = API_key
+
+    CORS(app=app)
+
+    @app.after_request
+    def after_request(response):
+        header = response.headers
+        header['Access-Control-Allow-Origin'] = '*'
+        header['Access-Control-Allow-Headers'] = '*'
+        return response
 
     from .models import User
 

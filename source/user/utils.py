@@ -1,3 +1,5 @@
+import os
+
 from typing import Optional
 
 from ..exceptions import (
@@ -39,7 +41,12 @@ def perform_signup(
     db.session.commit()
 
 
-def perform_delete(token: str):
-    user = retrieve_user_from_token(token=token)
+def perform_delete(token: str) -> None:
+    user: User = retrieve_user_from_token(token=token)
+    images_users_folder: str = "source/gallery/images_users"
+    if user.username in os.listdir(images_users_folder):
+        os.chmod(f"{images_users_folder}/{user.username}", 0o777)
+        os.removedirs(f"{images_users_folder}/{user.username}")
+
     db.session.delete(user)
     db.session.commit()
