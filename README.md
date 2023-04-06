@@ -7,6 +7,7 @@ This API allows users to upload and retrieve images.
 * Activate virtualenv ``virtualenv venv`` (or ``python -m venv venv``)
 * go into this virtualenv ``venv\Scripts\activate`` (under Linux : ``source venv/bin/activate``)
 * Install dependencies : ``pip install -r requirements.txt``
+* Install pre-commit for the repo : ``pre-commit install``
 * Set up database : 
   * Go to source folder (``cd source``)
   * Put the file .env into source folder
@@ -14,7 +15,10 @@ This API allows users to upload and retrieve images.
   * Init database : ``flask db init``
   * Create migration : ``flask db migrate``
   * Create tables : ``flask db upgrade``
-* run the server : ``flask run``
+
+
+## Launch server
+*  ``flask run`` (you can add ``--debug`` for check errors)
 
 
 ## How to use?
