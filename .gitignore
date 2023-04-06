@@ -5,3 +5,4 @@ source/gallery/images_users/*
 source/__pycache__/
 source/.env
 __pycache__/
+migrations
